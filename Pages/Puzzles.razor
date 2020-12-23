@@ -1,0 +1,16 @@
+@page "/puzzles"
+@inject PuzzleRepository PuzzleRepo
+
+<h1>Chess puzzles</h1>
+
+<p>There are @puzzles.Length puzzles available.</p>
+<p>First puzzle: @puzzles[0].Fen</p>
+
+@code {
+    private Puzzle[] puzzles;
+
+    protected override void OnInitialized()
+    {
+        puzzles = PuzzleRepo.Puzzles();
+    }
+}

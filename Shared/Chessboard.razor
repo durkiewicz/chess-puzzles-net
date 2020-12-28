@@ -1,0 +1,21 @@
+<div class="chessboard__wrapper">
+    <div class="chessboard">
+        @for (int rank = 8; rank >= 1; rank--)
+        {
+            @for (int file = 0; file < 8; file++)
+            {
+                <div class="chessboard__field @GetLightOrDarkCss(rank, file)"></div>
+            }    
+        }
+    </div>
+</div>
+
+@code {
+    private string GetLightOrDarkCss(int rank, int file)
+    {
+        var rankIsEven = rank % 2 == 0; 
+        var fileIsEven = file % 2 == 0; 
+        var isLight = rankIsEven == fileIsEven;
+        return isLight ? "chessboard__field--light" : "chessboard__field--dark";
+    }
+}

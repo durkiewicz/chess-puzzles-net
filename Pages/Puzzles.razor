@@ -1,17 +1,21 @@
 @page "/puzzles"
 @inject PuzzleRepository PuzzleRepo
+@inject LegalMovesGenerator LegalMoves;
 
 <h1>Chess puzzles</h1>
 
 <p>There are @puzzles.Length puzzles available.</p>
 <p>First puzzle: @puzzles[0].Fen</p>
+<p>Legal moves for the puzzle: @legalMoves.Length</p>
 <Chessboard />
 
 @code {
     private Puzzle[] puzzles;
-
-    protected override void OnInitialized()
+    private Move[] legalMoves = new Move[0];
+    private Puzzle CurrentPuzzle { get { return this.puzzles[0]; } }
+    protected override async Task OnInitializedAsync()
     {
         puzzles = PuzzleRepo.Puzzles();
+        this.legalMoves = await LegalMoves.GetLegalMoves(this.CurrentPuzzle);
     }
 }

@@ -1,5 +1,7 @@
-namespace ChessNET {
-    public class PuzzleRepository {
+namespace ChessNET
+{
+    public class PuzzleRepository
+    {
         private static readonly Puzzle[] puzzles = new[] {
             new Puzzle(1, "1k6/6R1/1K6/8/8/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Samotna wieża."),
             new Puzzle(2, "8/k1K5/8/8/8/1R6/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Samotna wieża."),

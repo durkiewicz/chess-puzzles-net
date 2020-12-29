@@ -13,7 +13,7 @@
     <div class="chessboard">
         @foreach (var p in piecesPositions)
         {
-            <Piece Position=@p/>
+            <Piece Position=@p IsSelected=@(selectedPiecePosition == p) OnClick="PieceClicked"/>
         }
     </div>
 </div>
@@ -21,6 +21,7 @@
 
 @code {
     private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
+    private PiecePosition selectedPiecePosition;
 
     [Parameter]
     public string Fen
@@ -37,5 +38,10 @@
         var fileIsEven = file % 2 == 0; 
         var isLight = rankIsEven == fileIsEven;
         return isLight ? "chessboard__field--light" : "chessboard__field--dark";
+    }
+
+    private void PieceClicked(PiecePosition piece)
+    {
+        this.selectedPiecePosition = piece;
     }
 }

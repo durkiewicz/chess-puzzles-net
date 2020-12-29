@@ -14,10 +14,27 @@
     height: 100%;
 }
 
+/*
+
+Let's use these colors:
+
+BURLYWOOD
+https://www.schemecolor.com/sample?getcolor=DEB887
+
+REDWOOD
+https://www.schemecolor.com/sample?getcolor=a55b53
+
+SEAL BROWN
+https://www.schemecolor.com/sample?getcolor=5b270b
+
+DOLPHIN GRAY
+https://www.schemecolor.com/sample?getcolor=7C9990
+
+*/
 .chessboard__field--light {
-    background-color: antiquewhite;
+    background-color: #EFDCC3;
 }
 
 .chessboard__field--dark {
-    background-color: rosybrown;
+    background-color: #A3B8B1;
 }

@@ -1,0 +1,41 @@
+<div class="piece"
+    style="
+        background-image: url(@BackgroundImageUrl);
+        grid-column: @GridColumnStart / span 1;
+        grid-row: @GridRowStart / span 1;
+    ">
+</div>
+
+@code {
+    [Parameter]
+    public PiecePosition Position { get; set; }
+
+    private string BackgroundImageUrl
+    {
+        get
+        {
+            var color = this.Position.Color == Color.White ? "w" : "b";
+            return String.Format(
+                "images/pieces/california/{0}{1}.svg",
+                color,
+                this.Position.Piece.GetLetterCode()
+            );
+        }
+    }
+
+    private int GridColumnStart
+    {
+        get
+        {
+            return (int) this.Position.File;
+        }
+    }
+
+    private int GridRowStart
+    {
+        get
+        {
+            return 9 - this.Position.Rank;
+        }
+    }
+}

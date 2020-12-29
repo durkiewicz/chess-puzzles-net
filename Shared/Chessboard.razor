@@ -1,3 +1,5 @@
+@inject FenParser FenParser;
+
 <div class="chessboard__wrapper">
     <div class="chessboard">
         @for (int rank = 8; rank >= 1; rank--)
@@ -5,12 +7,30 @@
             @for (int file = 0; file < 8; file++)
             {
                 <div class="chessboard__field @GetLightOrDarkCss(rank, file)"></div>
-            }    
+            }
+        }
+    </div>
+    <div class="chessboard">
+        @foreach (var p in piecesPositions)
+        {
+            <Piece Position=@p/>
         }
     </div>
 </div>
 
+
 @code {
+    private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
+
+    [Parameter]
+    public string Fen
+    {
+        set
+        {
+            this.piecesPositions = FenParser.GetPiecesPositions(value);
+        }
+    }
+
     private string GetLightOrDarkCss(int rank, int file)
     {
         var rankIsEven = rank % 2 == 0; 

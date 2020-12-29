@@ -20,6 +20,7 @@ namespace ChessNET
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<PuzzleRepository>();
             builder.Services.AddScoped<LegalMovesGenerator>();
+            builder.Services.AddScoped<FenParser>();
 
             await builder.Build().RunAsync();
         }

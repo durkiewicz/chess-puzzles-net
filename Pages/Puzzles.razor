@@ -1,5 +1,5 @@
 @page "/puzzles"
-@inject PuzzleRepository PuzzleRepo
+@inject PuzzleRepository PuzzleRepo;
 @inject LegalMovesGenerator LegalMoves;
 
 <h1>Chess puzzles</h1>
@@ -7,7 +7,7 @@
 <p>There are @puzzles.Length puzzles available.</p>
 <p>First puzzle: @puzzles[0].Fen</p>
 <p>Legal moves for the puzzle: @legalMoves.Length</p>
-<Chessboard />
+<Chessboard Fen=@CurrentPuzzle.Fen />
 
 @code {
     private Puzzle[] puzzles;

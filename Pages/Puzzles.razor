@@ -2,20 +2,28 @@
 @inject PuzzleRepository PuzzleRepo;
 @inject LegalMovesGenerator LegalMoves;
 
-<h1>Chess puzzles</h1>
-
-<p>There are @puzzles.Length puzzles available.</p>
-<p>First puzzle: @puzzles[0].Fen</p>
-<p>Legal moves for the puzzle: @legalMoves.Length</p>
-<Chessboard Fen=@CurrentPuzzle.Fen />
+<div class="puzzle">
+    <div class="puzzle__info-panel">
+        <h1>Mat w 1 posunięciu.</h1>
+        <h2>@subCategory</h2>
+        <h3>Zadanie @(currentIndex + 1) / @puzzles.Length</h3>
+    </div>
+    <div class="puzzle__board">
+        <Chessboard Fen=@CurrentPuzzle.Fen />
+    </div>
+</div>
 
 @code {
+    private string subCategory = "";
     private Puzzle[] puzzles;
     private Move[] legalMoves = new Move[0];
-    private Puzzle CurrentPuzzle { get { return this.puzzles[0]; } }
+    private int currentIndex = 0;
+    private Puzzle CurrentPuzzle { get { return this.puzzles[this.currentIndex]; } }
+
     protected override async Task OnInitializedAsync()
     {
-        puzzles = PuzzleRepo.Puzzles();
+        this.subCategory = PuzzleRepo.SubCategories.FirstOrDefault();
+        this.puzzles = PuzzleRepo.GetPuzzlesForSubCategory(this.subCategory).ToArray();
         this.legalMoves = await LegalMoves.GetLegalMoves(this.CurrentPuzzle);
     }
 }

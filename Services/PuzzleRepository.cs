@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace ChessNET
 {
     public class PuzzleRepository
@@ -106,7 +109,7 @@ namespace ChessNET
             new Puzzle(101, "4k3/4P3/3K1PP1/8/8/pp6/1P5P/8 w - - 0 1", "Mat w 1 posunięciu.", "Pionki."),
             new Puzzle(102, "7k/5Kp1/5PP1/8/8/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Pionki."),
             new Puzzle(103, "k7/2P5/1P1K4/7p/3P3P/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Pionki."),
-            new Puzzle(104, "1k6/5K2/5B2/2BB1B2/8/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", null),
+            new Puzzle(104, "1k6/5K2/5B2/2BB1B2/8/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Para gońców."),
             new Puzzle(105, "8/8/8/5B2/5B2/8/5K2/7k w - - 0 1", "Mat w 1 posunięciu.", "Para gońców."),
             new Puzzle(106, "8/8/8/6B1/8/8/5KBk/8 w - - 0 1", "Mat w 1 posunięciu.", "Para gońców."),
             new Puzzle(107, "7k/4B3/7K/8/2B5/8/8/8 w - - 0 1", "Mat w 1 posunięciu.", "Para gońców."),
@@ -537,11 +540,35 @@ namespace ChessNET
             new Puzzle(null, "Bk6/1P6/1P3Q2/6q1/7p/5p1P/5P1K/6BR w - - 0 1", "Mat w 1 posunięciu.", "")    
         };
 
-        public PuzzleRepository() { }
-
-        public Puzzle[] Puzzles()
+        public IEnumerable<string> SubCategories
         {
-            return puzzles;
+            get
+            {
+                return new string [] {
+                    "Samotna wieża.",
+                    "Dwie wieże.",
+                    "Samotny hetman.",
+                    "Goniec.",
+                    "Skoczek.",
+                    "Wieża z pionami.",
+                    "Hetman z pionami.",
+                    "Pionki.",
+                    "Para gońców.",
+                    "Dwa skoczki.",
+                    "Goniec i skoczek.",
+                    "Hetman i wieża.",
+                    "Dwa hetmany.",
+                    "Wieża i goniec.",
+                    "Wieża i skoczek.",
+                    "Hetman i goniec.",
+                    "Hetman i skoczek."
+                };
+            }
+        }
+
+        public IEnumerable<Puzzle> GetPuzzlesForSubCategory(string subCategory)
+        {
+            return puzzles.Where(p => p.SubCategory == subCategory);
         }
     }
 }

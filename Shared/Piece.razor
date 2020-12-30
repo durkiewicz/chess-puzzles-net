@@ -1,10 +1,11 @@
+@using ChessNET.Domain
 <div class="piece @SelectedClass"
     style="
         background-image: url(@BackgroundImageUrl);
         grid-column: @GridColumnStart / span 1;
         grid-row: @GridRowStart / span 1;
     "
-    @onclick="@(e => this.OnClick.InvokeAsync(this.Position))"
+    @onclick="HandleClick"
     >
 </div>
 
@@ -19,40 +20,23 @@
     public bool IsSelected { get; set; }
 
 
-    private string SelectedClass
-    {
-        get
-        {
-            return this.IsSelected ? "piece--selected" : "";
-        }
-    }
+    private string SelectedClass => this.IsSelected ? "piece--selected" : "";
 
     private string BackgroundImageUrl
     {
         get
         {
             var color = this.Position.Color == Color.White ? "w" : "b";
-            return String.Format(
-                "images/pieces/california/{0}{1}.svg",
-                color,
-                this.Position.Piece.GetLetterCode()
-            );
+            return $"images/pieces/california/{color}{this.Position.Piece.GetLetterCode()}.svg";
         }
     }
 
-    private int GridColumnStart
-    {
-        get
-        {
-            return (int) this.Position.File;
-        }
-    }
+    private int GridColumnStart => (int) this.Position.Square.File;
 
-    private int GridRowStart
+    private int GridRowStart => 9 - this.Position.Square.Rank;
+
+    private async Task HandleClick()
     {
-        get
-        {
-            return 9 - this.Position.Rank;
-        }
+        await OnClick.InvokeAsync(Position);
     }
 }

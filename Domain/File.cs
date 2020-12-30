@@ -1,4 +1,4 @@
-namespace ChessNET
+namespace ChessNET.Domain
 {
     public enum File 
     {

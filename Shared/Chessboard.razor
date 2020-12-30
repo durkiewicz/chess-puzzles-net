@@ -1,47 +1,62 @@
-@inject FenParser FenParser;
-
 <div class="chessboard__wrapper">
     <div class="chessboard">
-        @for (int rank = 8; rank >= 1; rank--)
-        {
-            @for (int file = 0; file < 8; file++)
-            {
-                <div class="chessboard__field @GetLightOrDarkCss(rank, file)"></div>
-            }
-        }
-    </div>
-    <div class="chessboard">
-        @foreach (var p in piecesPositions)
+        @foreach (var p in PiecesPositions)
         {
             <Piece Position=@p IsSelected=@(selectedPiecePosition == p) OnClick="PieceClicked"/>
         }
     </div>
+    <div class="chessboard">
+        @foreach (var rank in Enumerable.Range(1, 8).Reverse())
+        {
+            @foreach (var file in Enumerable.Range(1, 8).Select(n => (File) n))
+            {
+                <SquareComponent Square="new Square(file, rank)" OnClick=@HandleSquareClick/>
+            }
+        }
+    </div>
 </div>
 
-
 @code {
-    private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
     private PiecePosition selectedPiecePosition;
+    
+    [Parameter]
+    public Color ColorToMove { get; set; } = Color.White;
+    
+    [Parameter]
+    public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
 
     [Parameter]
-    public string Fen
+    public Action<Square> SquareClicked { get; set; }
+    
+    [Parameter]
+    public EventCallback<PiecePosition> PieceSelected { get; set; }
+    
+    [Parameter]
+    public Action<PiecePosition> PieceDeselected { get; set; }
+    
+    private async Task PieceClicked(PiecePosition piece)
     {
-        set
+        if (piece.Color == ColorToMove)
         {
-            this.piecesPositions = FenParser.GetPiecesPositions(value);
+            selectedPiecePosition = piece;
+            await PieceSelected.InvokeAsync(piece);
+        }
+        else
+        {
+            DeselectPieceIfNeeded();
         }
     }
 
-    private string GetLightOrDarkCss(int rank, int file)
+    private void HandleSquareClick(Square square)
     {
-        var rankIsEven = rank % 2 == 0; 
-        var fileIsEven = file % 2 == 0; 
-        var isLight = rankIsEven == fileIsEven;
-        return isLight ? "chessboard__field--light" : "chessboard__field--dark";
+        DeselectPieceIfNeeded();
+        SquareClicked?.Invoke(square);
     }
 
-    private void PieceClicked(PiecePosition piece)
+    private void DeselectPieceIfNeeded()
     {
-        this.selectedPiecePosition = piece;
+        if (selectedPiecePosition == null) return;
+        PieceDeselected?.Invoke(selectedPiecePosition);
+        selectedPiecePosition = null;
     }
 }

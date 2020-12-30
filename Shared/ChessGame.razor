@@ -1,0 +1,19 @@
+@using ChessNET.Domain
+@inject LegalMovesGenerator LegalMoves;
+
+<Chessboard PiecesPositions="PiecesPositions" PieceSelected="PieceSelected"/>
+
+@code {
+    private Move[] legalMoves = new Move[0];
+    
+    [Parameter]
+    public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
+    
+    [Parameter]
+    public Color ColorToMove { get; set; } = Color.White;
+
+    private async Task PieceSelected(PiecePosition p)
+    {
+        legalMoves = await LegalMoves.GetLegalMovesFromSquare(PiecesPositions, ColorToMove, p.Square);
+    }
+}

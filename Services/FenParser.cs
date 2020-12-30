@@ -1,68 +1,90 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ChessNET.Domain;
 
 namespace ChessNET
 {
     public class FenParser
     {
-        public IEnumerable<PiecePosition> GetPiecesPositions(string fen) {
+        public IEnumerable<PiecePosition> GetPiecesPositions(string fen)
+        {
             var parts = fen.Split(' ');
             var ranks = parts[0].Split('/');
             return ranks.SelectMany(GetPiecesPositionsForRank).ToList();
         }
 
-        private IEnumerable<PiecePosition> GetPiecesPositionsForRank(string rankDescriptor, int index) {
+        public Color GetColorToMove(string fen)
+        {
+            var parts = fen.Split(' ');
+            switch (parts[1].ToLower())
+            {
+                case "w":
+                    return Color.White;
+                case "b":
+                    return Color.Black;
+                default:
+                    throw new ArgumentException("Invalid FEN: " + fen);
+            }
+        }
+
+        private IEnumerable<PiecePosition> GetPiecesPositionsForRank(string rankDescriptor, int index)
+        {
             var pieces = new List<PiecePosition>();
             var file = File.A;
             var rank = 8 - index;
-            foreach (var c in rankDescriptor) {
-                switch (c) {
+            PiecePosition Position(Piece piece, Color color) => new(piece, color, new Square(file, rank));
+            foreach (var c in rankDescriptor)
+            {
+                switch (c)
+                {
                     case 'K':
-                        pieces.Add(new PiecePosition(Piece.King, Color.White, file, rank));
+                        pieces.Add(Position(Piece.King, Color.White));
                         break;
                     case 'k':
-                        pieces.Add(new PiecePosition(Piece.King, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.King, Color.Black));
                         break;
                     case 'Q':
-                        pieces.Add(new PiecePosition(Piece.Queen, Color.White, file, rank));
+                        pieces.Add(Position(Piece.Queen, Color.White));
                         break;
                     case 'q':
-                        pieces.Add(new PiecePosition(Piece.Queen, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.Queen, Color.Black));
                         break;
                     case 'R':
-                        pieces.Add(new PiecePosition(Piece.Rook, Color.White, file, rank));
+                        pieces.Add(Position(Piece.Rook, Color.White));
                         break;
                     case 'r':
-                        pieces.Add(new PiecePosition(Piece.Rook, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.Rook, Color.Black));
                         break;
                     case 'B':
-                        pieces.Add(new PiecePosition(Piece.Bishop, Color.White, file, rank));
+                        pieces.Add(Position(Piece.Bishop, Color.White));
                         break;
                     case 'b':
-                        pieces.Add(new PiecePosition(Piece.Bishop, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.Bishop, Color.Black));
                         break;
                     case 'N':
-                        pieces.Add(new PiecePosition(Piece.Knight, Color.White, file, rank));
+                        pieces.Add(Position(Piece.Knight, Color.White));
                         break;
                     case 'n':
-                        pieces.Add(new PiecePosition(Piece.Knight, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.Knight, Color.Black));
                         break;
                     case 'P':
-                        pieces.Add(new PiecePosition(Piece.Pawn, Color.White, file, rank));
+                        pieces.Add(Position(Piece.Pawn, Color.White));
                         break;
                     case 'p':
-                        pieces.Add(new PiecePosition(Piece.Pawn, Color.Black, file, rank));
+                        pieces.Add(Position(Piece.Pawn, Color.Black));
                         break;
                     default:
-                        if (char.IsDigit(c)) {
+                        if (char.IsDigit(c))
+                        {
                             file += int.Parse(c.ToString());
                             break;
                         }
+
                         throw new NotImplementedException("Unhandled character: " + c);
                 }
-                
             }
+
             return pieces;
         }
     }

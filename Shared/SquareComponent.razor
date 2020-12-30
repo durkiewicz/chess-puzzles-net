@@ -1,0 +1,23 @@
+<div class="@GetLightOrDarkCss"
+    @onclick="@(e => OnClick.InvokeAsync(Square))"
+>
+</div>
+
+@code {
+    [Parameter]
+    public Square Square { get; set; }
+
+    [Parameter]
+    public EventCallback<Square> OnClick { get; set; }
+    
+    private string GetLightOrDarkCss
+    {
+        get
+        {
+            var rankIsEven = Square.Rank % 2 == 0;
+            var fileIsEven = (int) Square.File % 2 == 0;
+            var isLight = rankIsEven == fileIsEven;
+            return isLight ? "square--light" : "square--dark";
+        }
+    }
+}

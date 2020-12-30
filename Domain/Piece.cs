@@ -1,4 +1,4 @@
-namespace ChessNET
+namespace ChessNET.Domain
 {
     public enum Piece 
     {
@@ -14,10 +14,7 @@ namespace ChessNET
     {
         public static char GetLetterCode(this Piece piece)
         {
-            if (piece == Piece.Knight) {
-                return 'N';
-            }
-            return piece.ToString()[0];
+            return piece == Piece.Knight ? 'N' : piece.ToString()[0];
         }
     }
 }

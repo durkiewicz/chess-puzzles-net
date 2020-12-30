@@ -1,4 +1,4 @@
-namespace ChessNET {
+namespace ChessNET.Domain {
     public class Move {
         public string Color { get; set; }
         public string Flags { get; set; }

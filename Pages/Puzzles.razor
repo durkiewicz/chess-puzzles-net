@@ -1,6 +1,6 @@
 @page "/puzzles"
 @inject PuzzleRepository PuzzleRepo;
-@inject LegalMovesGenerator LegalMoves;
+@inject FenParser FenParser;
 
 <div class="puzzle">
     <div class="puzzle__info-panel">
@@ -9,21 +9,23 @@
         <h3>Zadanie @(currentIndex + 1) / @puzzles.Length</h3>
     </div>
     <div class="puzzle__board">
-        <Chessboard Fen=@CurrentPuzzle.Fen />
+        <ChessGame PiecesPositions="@piecesPositions" ColorToMove="@colorToMove"/>
     </div>
 </div>
 
 @code {
     private string subCategory = "";
     private Puzzle[] puzzles;
-    private Move[] legalMoves = new Move[0];
     private int currentIndex = 0;
-    private Puzzle CurrentPuzzle { get { return this.puzzles[this.currentIndex]; } }
-
-    protected override async Task OnInitializedAsync()
+    private Puzzle CurrentPuzzle => puzzles[currentIndex];
+    private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
+    private Color colorToMove = Color.White;
+    
+    protected override void OnInitialized()
     {
-        this.subCategory = PuzzleRepo.SubCategories.FirstOrDefault();
-        this.puzzles = PuzzleRepo.GetPuzzlesForSubCategory(this.subCategory).ToArray();
-        this.legalMoves = await LegalMoves.GetLegalMoves(this.CurrentPuzzle);
+        subCategory = PuzzleRepo.SubCategories.FirstOrDefault();
+        puzzles = PuzzleRepo.GetPuzzlesForSubCategory(subCategory).ToArray();
+        piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
+        colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
     }
 }

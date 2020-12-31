@@ -3,6 +3,9 @@
     background-repeat: no-repeat;
     z-index: 100;
     position: relative;
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+    transition: transform 1s;
 }
 
     .piece--selected::after {

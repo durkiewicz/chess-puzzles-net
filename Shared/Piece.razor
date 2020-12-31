@@ -2,8 +2,7 @@
 <div class="piece @SelectedClass"
     style="
         background-image: url(@BackgroundImageUrl);
-        grid-column: @GridColumnStart / span 1;
-        grid-row: @GridRowStart / span 1;
+        transform: translate(@TranslateX%, @TranslateY%);
     "
     @onclick="HandleClick"
     >
@@ -31,9 +30,9 @@
         }
     }
 
-    private int GridColumnStart => (int) Position.Square.File;
+    private int TranslateX => ((int) Position.Square.File - 1) * 100;
 
-    private int GridRowStart => 9 - Position.Square.Rank;
+    private int TranslateY => (8 - Position.Square.Rank) * 100;
 
     private async Task HandleClick()
     {

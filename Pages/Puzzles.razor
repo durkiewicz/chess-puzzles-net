@@ -12,6 +12,8 @@
         <ChessGame PiecesPositions="@piecesPositions" ColorToMove="@colorToMove" PieceMoved="@PieceMoved"/>
     </div>
 </div>
+<CoverWithIcon Visible="showCoverWithIcon" Icon="showCoverWithIconType"/>
+
 
 @code {
     private string subCategory = "";
@@ -20,6 +22,8 @@
     private Puzzle CurrentPuzzle => puzzles[currentIndex];
     private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
     private Color colorToMove = Color.White;
+    private bool showCoverWithIcon;
+    private CoverWithIcon.IconType showCoverWithIconType;
     
     protected override void OnInitialized()
     {
@@ -29,10 +33,16 @@
         colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
     }
 
-    private void PieceMoved(Move move)
+    private async Task PieceMoved(Move move)
     {
         piecesPositions = piecesPositions
             .Select(p => p.Square == move.From ? p with { Square = move.To } : p)
             .ToList();
+        await Task.Delay(1000);
+        showCoverWithIconType = move.IsCheckMate ? CoverWithIcon.IconType.ThumbsUp : CoverWithIcon.IconType.ThumbsDown;
+        showCoverWithIcon = true;
+        StateHasChanged();
+        await Task.Delay(500);
+        showCoverWithIcon = false;
     }
 }

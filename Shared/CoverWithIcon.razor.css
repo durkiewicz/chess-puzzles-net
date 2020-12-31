@@ -1,0 +1,25 @@
+.cover {
+    position: fixed;    
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .3s, visibility 0s .3s;
+    background-color: white;
+}
+    .cover--visible {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .3s, visibility 0s 0s;
+    }
+
+    .cover__icon {
+        width: 30vw;
+        height: 30vw;
+    }

@@ -1,0 +1,31 @@
+@using ChessNET.Shared.Icons
+
+<div class="cover @( Visible ? "cover--visible" : "" )">
+    <div class="cover__icon">
+        @switch (Icon)
+        {
+            case IconType.ThumbsUp:
+                <ThumbsUp />
+                break;
+            case IconType.ThumbsDown:
+                <ThumbsDown />
+                break;
+            default:
+                throw new ArgumentException("Unsupported icon type: " + Icon);
+        }
+    </div>
+</div>
+
+@code {
+    public enum IconType
+    {
+        ThumbsUp,
+        ThumbsDown
+    }
+
+    [Parameter]
+    public IconType Icon { get; set; } = IconType.ThumbsUp;
+
+    [Parameter]
+    public bool Visible { get; set; }
+}

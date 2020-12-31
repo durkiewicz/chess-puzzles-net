@@ -9,5 +9,6 @@ namespace ChessNET.Domain
         // 'p' - a promotion
         // 'k' - king-side castling
         // 'q' - queen-side castling
+        public bool IsCheckMate => San.EndsWith('#');
     }
 }

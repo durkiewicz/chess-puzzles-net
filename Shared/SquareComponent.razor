@@ -1,5 +1,5 @@
 <div class="@GetLightOrDarkCss"
-    @onclick="@(e => OnClick.InvokeAsync(Square))"
+    @onclick="HandleClick"
 >
 </div>
 
@@ -9,6 +9,11 @@
 
     [Parameter]
     public EventCallback<Square> OnClick { get; set; }
+
+    private async Task HandleClick()
+    {
+        await OnClick.InvokeAsync(Square);
+    }
     
     private string GetLightOrDarkCss
     {

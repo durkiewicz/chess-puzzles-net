@@ -20,20 +20,20 @@
     public bool IsSelected { get; set; }
 
 
-    private string SelectedClass => this.IsSelected ? "piece--selected" : "";
+    private string SelectedClass => IsSelected ? "piece--selected" : "";
 
     private string BackgroundImageUrl
     {
         get
         {
-            var color = this.Position.Color == Color.White ? "w" : "b";
-            return $"images/pieces/california/{color}{this.Position.Piece.GetLetterCode()}.svg";
+            var color = Position.Color == Color.White ? "w" : "b";
+            return $"images/pieces/california/{color}{Position.Piece.GetLetterCode()}.svg";
         }
     }
 
-    private int GridColumnStart => (int) this.Position.Square.File;
+    private int GridColumnStart => (int) Position.Square.File;
 
-    private int GridRowStart => 9 - this.Position.Square.Rank;
+    private int GridRowStart => 9 - Position.Square.Rank;
 
     private async Task HandleClick()
     {

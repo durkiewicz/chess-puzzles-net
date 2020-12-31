@@ -26,13 +26,13 @@
     public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
 
     [Parameter]
-    public Action<Square> SquareClicked { get; set; }
+    public EventCallback<Square> SquareClicked { get; set; }
     
     [Parameter]
     public EventCallback<PiecePosition> PieceSelected { get; set; }
     
     [Parameter]
-    public Action<PiecePosition> PieceDeselected { get; set; }
+    public EventCallback<PiecePosition> PieceDeselected { get; set; }
     
     private async Task PieceClicked(PiecePosition piece)
     {
@@ -43,20 +43,20 @@
         }
         else
         {
-            DeselectPieceIfNeeded();
+            await DeselectPieceIfNeeded();
         }
     }
 
-    private void HandleSquareClick(Square square)
+    private async Task HandleSquareClick(Square square)
     {
-        DeselectPieceIfNeeded();
-        SquareClicked?.Invoke(square);
+        await DeselectPieceIfNeeded();
+        await SquareClicked.InvokeAsync(square);
     }
 
-    private void DeselectPieceIfNeeded()
+    private async Task DeselectPieceIfNeeded()
     {
         if (selectedPiecePosition == null) return;
-        PieceDeselected?.Invoke(selectedPiecePosition);
+        await PieceDeselected.InvokeAsync(selectedPiecePosition);
         selectedPiecePosition = null;
     }
 }

@@ -1,10 +1,11 @@
 @using ChessNET.Domain
 @inject LegalMovesGenerator LegalMoves;
 
-<Chessboard PiecesPositions="PiecesPositions" PieceSelected="PieceSelected"/>
+<Chessboard PiecesPositions="PiecesPositions" PieceSelected="PieceSelected" PieceDeselected="PieceDeselected" SquareClicked="SquareClicked"/>
 
 @code {
     private Move[] legalMoves = new Move[0];
+    private PiecePosition selectedPiece;
     
     [Parameter]
     public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
@@ -14,6 +15,21 @@
 
     private async Task PieceSelected(PiecePosition p)
     {
+        selectedPiece = p;
         legalMoves = await LegalMoves.GetLegalMovesFromSquare(PiecesPositions, ColorToMove, p.Square);
     }
+
+    private void PieceDeselected(PiecePosition p)
+    {
+        if (selectedPiece == p)
+        {
+            selectedPiece = null;
+        }
+    }
+
+    private void SquareClicked(Square square)
+    {
+        throw new NotImplementedException();
+    }
+
 }

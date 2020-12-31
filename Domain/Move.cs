@@ -1,5 +1,6 @@
-namespace ChessNET.Domain {
-    public class Move
+namespace ChessNET.Domain
+{
+    public record Move (Piece Piece, Color Color, Square From, Square To, string San, string Flags)
     {
         // 'n' - a non-capture
         // 'b' - a pawn push of two squares
@@ -8,22 +9,5 @@ namespace ChessNET.Domain {
         // 'p' - a promotion
         // 'k' - king-side castling
         // 'q' - queen-side castling
-        private readonly string flags;
-        private readonly string san;
-        
-        public Move(Piece piece, Color color, Square @from, Square to, string san, string flags)
-        {
-            this.flags = flags;
-            Color = color;
-            From = @from;
-            To = to;
-            Piece = piece;
-            this.san = san;
-        }
-        
-        public Color Color { get; }
-        public Square From { get; }
-        public Square To { get; }
-        public Piece Piece { get; }
     }
 }

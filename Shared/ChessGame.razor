@@ -13,6 +13,9 @@
     [Parameter]
     public Color ColorToMove { get; set; } = Color.White;
 
+    [Parameter]
+    public EventCallback<Move> PieceMoved { get; set; }
+
     private async Task PieceSelected(PiecePosition p)
     {
         selectedPiece = p;
@@ -27,9 +30,16 @@
         }
     }
 
-    private void SquareClicked(Square square)
+    private async Task SquareClicked(Square square)
     {
-        throw new NotImplementedException();
+        var move = legalMoves.FirstOrDefault(m => m.To == square);
+        if (move == null)
+        {
+            legalMoves = new Move[0];
+        }
+        else
+        {
+            await PieceMoved.InvokeAsync(move);
+        }
     }
-
 }

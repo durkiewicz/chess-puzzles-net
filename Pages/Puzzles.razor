@@ -9,7 +9,7 @@
         <h3>Zadanie @(currentIndex + 1) / @puzzles.Length</h3>
     </div>
     <div class="puzzle__board">
-        <ChessGame PiecesPositions="@piecesPositions" ColorToMove="@colorToMove"/>
+        <ChessGame PiecesPositions="@piecesPositions" ColorToMove="@colorToMove" PieceMoved="@PieceMoved"/>
     </div>
 </div>
 
@@ -27,5 +27,12 @@
         puzzles = PuzzleRepo.GetPuzzlesForSubCategory(subCategory).ToArray();
         piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
         colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
+    }
+
+    private void PieceMoved(Move move)
+    {
+        piecesPositions = piecesPositions
+            .Select(p => p.Square == move.From ? p with { Square = move.To } : p)
+            .ToList();
     }
 }

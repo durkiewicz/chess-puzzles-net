@@ -17,15 +17,7 @@ namespace ChessNET
         public Color GetColorToMove(string fen)
         {
             var parts = fen.Split(' ');
-            switch (parts[1].ToLower())
-            {
-                case "w":
-                    return Color.White;
-                case "b":
-                    return Color.Black;
-                default:
-                    throw new ArgumentException("Invalid FEN: " + fen);
-            }
+            return ColorExtensions.FromString(parts[1]);
         }
 
         private IEnumerable<PiecePosition> GetPiecesPositionsForRank(string rankDescriptor, int index)

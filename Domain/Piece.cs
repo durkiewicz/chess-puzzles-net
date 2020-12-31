@@ -1,3 +1,5 @@
+using System;
+
 namespace ChessNET.Domain
 {
     public enum Piece 
@@ -15,6 +17,20 @@ namespace ChessNET.Domain
         public static char GetLetterCode(this Piece piece)
         {
             return piece == Piece.Knight ? 'N' : piece.ToString()[0];
+        }
+
+        public static Piece FromString(string s)
+        {
+            return s.ToLower() switch
+            {
+                "k" => Piece.King,
+                "q" => Piece.Queen,
+                "r" => Piece.Rook,
+                "b" => Piece.Bishop,
+                "n" => Piece.Knight,
+                "p" => Piece.Pawn,
+                _ => throw new ArgumentException("Invalid piece: " + s)
+            };
         }
     }
 }

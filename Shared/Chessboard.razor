@@ -2,7 +2,11 @@
     <div class="chessboard">
         @foreach (var p in PiecesPositions)
         {
-            <Piece Position=@p IsSelected=@(selectedPiecePosition == p) OnClick="PieceClicked"/>
+            <Piece
+                Position=@p
+                IsSelected=@(selectedPiecePosition == p)
+                IsSelectable=@(p.Color == ColorToMove)
+                OnClick="PieceClicked"/>
         }
     </div>
     <div class="chessboard">

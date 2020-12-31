@@ -19,18 +19,28 @@
     private string subCategory = "";
     private Puzzle[] puzzles;
     private int currentIndex = 0;
-    private Puzzle CurrentPuzzle => puzzles[currentIndex];
+    private Puzzle CurrentPuzzle => puzzles[CurrentIndex];
     private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
     private Color colorToMove = Color.White;
     private bool showCoverWithIcon;
     private CoverWithIcon.IconType showCoverWithIconType;
+
+    private int CurrentIndex
+    {
+        get => currentIndex;
+        set
+        {
+            currentIndex = value;
+            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
+            colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
+        }
+    }
     
     protected override void OnInitialized()
     {
         subCategory = PuzzleRepo.SubCategories.FirstOrDefault();
         puzzles = PuzzleRepo.GetPuzzlesForSubCategory(subCategory).ToArray();
-        piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
-        colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
+        CurrentIndex = 0;
     }
 
     private async Task PieceMoved(Move move)
@@ -44,5 +54,16 @@
         StateHasChanged();
         await Task.Delay(500);
         showCoverWithIcon = false;
+        if (move.IsCheckMate)
+        {
+            if (CurrentIndex < puzzles.Length)
+            {
+                CurrentIndex++;
+            }    
+        }
+        else
+        {
+            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
+        }
     }
 }

@@ -1,33 +1,9 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .content {
     padding-top: 1.1rem;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
 }
 
 #blazor-error-ui {
@@ -58,3 +34,26 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 100%;
 }
+
+.full-viewport {
+    width: 100vw;
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+    .flex--centered {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .flex--end {
+        justify-content: flex-end;
+    }
+
+.padding, .padding--top, .padding--horizontal { padding-top: 1rem; }
+.padding, .padding--bottom, .padding--horizontal { padding-bottom: 1rem; }
+.padding, .padding--left, .padding--vertical { padding-left: 1rem; }
+.padding, .padding--right, .padding--vertical { padding-right: 1rem; }

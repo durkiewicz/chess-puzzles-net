@@ -1,7 +1,36 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<div class="flex flex--centered full-viewport">
+    <form @onsubmit="Next" @onsubmit:preventDefault="true">
+        <h1>Jak się nazywasz?</h1>
+        <div>
+            <div class="padding--horizontal">
+                <MatTextField @bind-Value="@name" Label="Twoje imię" FullWidth="true" Required="true" @ref="nameTextField"/>
+            </div>
+            <footer class="padding--horizontal flex flex--end">
+                <MatButton type="submit">
+                    Dalej
+                </MatButton>
+            </footer>
+        </div>
+    </form>
+</div>
 
-Welcome to your new app.
+@code
+{
+    private string name;
+    private MatTextField<string> nameTextField;
+    
+    private void Next(EventArgs obj)
+    {
+        Console.WriteLine(name);
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await nameTextField.InputRef.FocusAsync();
+        }
+    }
+}

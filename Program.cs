@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using MatBlazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ namespace ChessNET
             builder.Services.AddScoped<PuzzleRepository>();
             builder.Services.AddScoped<LegalMovesGenerator>();
             builder.Services.AddScoped<FenParser>();
-
+            builder.Services.AddMatBlazor();
             await builder.Build().RunAsync();
         }
     }

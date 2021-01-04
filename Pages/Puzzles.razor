@@ -1,4 +1,4 @@
-@page "/puzzles"
+@page "/puzzles/{SetId:int}"
 @inject PuzzleRepository PuzzleRepo;
 @inject FenParser FenParser;
 
@@ -16,14 +16,18 @@
 
 
 @code {
+     
     private string subCategory = "";
-    private Puzzle[] puzzles;
+    private string[] puzzles;
     private int currentIndex = 0;
-    private Puzzle CurrentPuzzle => puzzles[CurrentIndex];
+    private string CurrentPuzzle => puzzles[CurrentIndex];
     private IEnumerable<PiecePosition> piecesPositions = Enumerable.Empty<PiecePosition>();
     private Color colorToMove = Color.White;
     private bool showCoverWithIcon;
     private CoverWithIcon.IconType showCoverWithIconType;
+
+    [Parameter]
+    public int SetId { get; set; } = 1;
 
     private int CurrentIndex
     {
@@ -31,15 +35,15 @@
         set
         {
             currentIndex = value;
-            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
-            colorToMove = FenParser.GetColorToMove(CurrentPuzzle.Fen);
+            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle);
+            colorToMove = FenParser.GetColorToMove(CurrentPuzzle);
         }
     }
     
     protected override void OnInitialized()
     {
-        subCategory = PuzzleRepo.SubCategories.FirstOrDefault();
-        puzzles = PuzzleRepo.GetPuzzlesForSubCategory(subCategory).ToArray();
+        subCategory = PuzzleRepo.GetTitle(SetId);
+        puzzles = PuzzleRepo.GetPuzzlesBySetId(SetId).ToArray();
         CurrentIndex = 0;
     }
 
@@ -56,14 +60,18 @@
         showCoverWithIcon = false;
         if (move.IsCheckMate)
         {
-            if (CurrentIndex < puzzles.Length)
+            if (CurrentIndex < puzzles.Length - 1)
             {
                 CurrentIndex++;
-            }    
+            }
+            else
+            {
+                Console.WriteLine("Completed!");
+            }
         }
         else
         {
-            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle.Fen);
+            piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle);
         }
     }
 }

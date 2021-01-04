@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject StateService StateService;
+@inject NavigationManager NavigationManager;
 
 <div class="flex flex--centered full-viewport">
     <form @onsubmit="Next" @onsubmit:preventDefault="true">
@@ -37,19 +38,21 @@
 
 @code
 {
-    private string name;
+    private string name = "";
     private string[] savedNames = Array.Empty<string>();
     private MatTextField<string> nameTextField;
     private bool differentName;
 
-    private void Next(EventArgs obj)
+    private void Next()
     {
         StateService.SubmitName(name);
+        NavigationManager.NavigateTo("puzzles-progress");
     }
     
     private void Next(string n)
     {
         StateService.UserName = n;
+        NavigationManager.NavigateTo("puzzles-progress");
     }
 
     protected override void OnInitialized()

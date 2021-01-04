@@ -1,10 +1,10 @@
 namespace ChessNET.Domain {
     public class Puzzle {
         public Puzzle(int? number, string fen, string category, string subCategory) {
-            this.Number = number;
-            this.Fen = fen;
-            this.Category = category;
-            this.SubCategory = subCategory;
+            Number = number;
+            Fen = fen;
+            Category = category;
+            SubCategory = subCategory;
         }
 
         public string Fen { get; }

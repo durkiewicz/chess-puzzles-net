@@ -1,0 +1,45 @@
+@page "/puzzles-progress"
+@inject StateService StateService;
+@inject NavigationManager NavigationManager;
+@inject PuzzleRepository PuzzleRepo;
+
+<div class="flex flex--centered">
+    <div>
+        <h1>Cześć, @userName!</h1>
+        <div class="padding--horizontal">
+            Które zadania wybierasz?
+        </div>  
+        <MatList SingleSelection="true" TwoLine="true">
+            @foreach (var puzzleSet in puzzleSets)
+            {
+                <MatListItem OnClick="() => Choose(puzzleSet)">
+                    <MatListItemText>
+                        <MatListItemPrimaryText>@puzzleSet.Title</MatListItemPrimaryText>
+                        <MatListItemSecondaryText>Nierozwiązane.</MatListItemSecondaryText>
+                    </MatListItemText>
+                </MatListItem>
+                <MatListDivider></MatListDivider>
+            }
+        </MatList>
+    </div>
+</div>
+
+@code {
+    private string userName;
+    private IEnumerable<PuzzleSet> puzzleSets;
+    
+    protected override void OnInitialized()
+    {
+        userName = StateService.UserName;
+        if (string.IsNullOrEmpty(userName))
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        puzzleSets = PuzzleRepo.PuzzleSets;
+    }
+
+    private void Choose(PuzzleSet puzzleSet)
+    {
+        NavigationManager.NavigateTo($"/puzzles/{puzzleSet.Id}");
+    }
+}

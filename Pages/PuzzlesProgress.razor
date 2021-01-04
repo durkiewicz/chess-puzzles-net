@@ -1,6 +1,6 @@
-@page "/puzzles-progress"
+@page "/user/{UserId:int}/puzzles-progress"
 @inject StateService StateService;
-@inject NavigationManager NavigationManager;
+@inject ChessNavigationManager NavigationManager;
 @inject PuzzleRepository PuzzleRepo;
 
 <div class="flex flex--centered">
@@ -28,18 +28,24 @@
     private string userName;
     private IEnumerable<PuzzleSet> puzzleSets;
     
+    [Parameter]
+    public int? UserId { get; set; } = 1;
+    
     protected override void OnInitialized()
     {
-        userName = StateService.UserName;
-        if (string.IsNullOrEmpty(userName))
+        if (UserId.HasValue)
         {
-            NavigationManager.NavigateTo("/");
+            userName = StateService.GetUserName(UserId.Value);
+        }
+        else
+        {
+            NavigationManager.NavigateToIndex();
         }
         puzzleSets = PuzzleRepo.PuzzleSets;
     }
 
     private void Choose(PuzzleSet puzzleSet)
     {
-        NavigationManager.NavigateTo($"/puzzles/{puzzleSet.Id}");
+        NavigationManager.NavigateToPuzzles(UserId.Value, puzzleSet.Id);
     }
 }

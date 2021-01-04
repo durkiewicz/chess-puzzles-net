@@ -1,12 +1,20 @@
-@page "/puzzles/{SetId:int}"
+@page "/user/{UserId:int}/puzzles/{SetId:int}"
+
+@using System.Diagnostics
 @inject PuzzleRepository PuzzleRepo;
 @inject FenParser FenParser;
+@inject StateService StateService;
+@inject ChessNavigationManager NavigationManager;
 
 <div class="puzzle">
     <div class="puzzle__info-panel">
-        <h1>Mat w 1 posunięciu.</h1>
-        <h2>@subCategory</h2>
-        <h3>Zadanie @(currentIndex + 1) / @puzzles.Length</h3>
+        <h1>@subCategory</h1>
+        <div class="padding--horizontal">
+            Daj mata w 1 posunięciu.
+        </div>
+        <div class="padding--horizontal">
+            Zadanie @(currentIndex + 1) / @puzzles.Length
+        </div>
     </div>
     <div class="puzzle__board">
         <ChessGame PiecesPositions="@piecesPositions" ColorToMove="@colorToMove" PieceMoved="@PieceMoved"/>
@@ -16,7 +24,6 @@
 
 
 @code {
-     
     private string subCategory = "";
     private string[] puzzles;
     private int currentIndex = 0;
@@ -25,10 +32,15 @@
     private Color colorToMove = Color.White;
     private bool showCoverWithIcon;
     private CoverWithIcon.IconType showCoverWithIconType;
-
+    private readonly Stopwatch stopwatch = new();
+    private int numberOfFailures = 0;
+    
     [Parameter]
     public int SetId { get; set; } = 1;
-
+    
+    [Parameter]
+    public int? UserId { get; set; }
+    
     private int CurrentIndex
     {
         get => currentIndex;
@@ -39,12 +51,17 @@
             colorToMove = FenParser.GetColorToMove(CurrentPuzzle);
         }
     }
-    
+
     protected override void OnInitialized()
     {
+        if (!UserId.HasValue)
+        {
+            NavigationManager.NavigateToIndex();
+        }
         subCategory = PuzzleRepo.GetTitle(SetId);
         puzzles = PuzzleRepo.GetPuzzlesBySetId(SetId).ToArray();
         CurrentIndex = 0;
+        stopwatch.Start();
     }
 
     private async Task PieceMoved(Move move)
@@ -66,11 +83,20 @@
             }
             else
             {
-                Console.WriteLine("Completed!");
+                stopwatch.Stop();
+                StateService.SubmitSolvedPuzzleSet(new(
+                    SetId,
+                    UserId.Value,
+                    numberOfFailures,
+                    stopwatch.ElapsedMilliseconds / 1000,
+                    DateTime.UtcNow
+                ));
+                NavigationManager.NavigateToPuzzlesProgress(UserId.Value);
             }
         }
         else
         {
+            numberOfFailures++;
             piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle);
         }
     }

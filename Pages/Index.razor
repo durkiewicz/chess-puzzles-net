@@ -1,11 +1,11 @@
 ﻿@page "/"
 @inject StateService StateService;
-@inject NavigationManager NavigationManager;
+@inject ChessNavigationManager NavigationManager;
 
 <div class="flex flex--centered full-viewport">
     <form @onsubmit="Next" @onsubmit:preventDefault="true">
         <h1>Jak się nazywasz?</h1>
-        @if (savedNames.Length == 0 || differentName)
+        @if (savedUsers.Length == 0 || differentName)
         {
             <div>
                 <div class="padding--horizontal">
@@ -21,10 +21,10 @@
         else
         {
             <MatList SingleSelection="true">
-                @foreach (var n in savedNames)
+                @foreach (var u in savedUsers)
                 {
-                    <MatListItem OnClick="() => Next(n)">
-                        @n
+                    <MatListItem OnClick="() => Next(u)">
+                        @u.Name
                     </MatListItem>
                 }
                 <MatListItem OnClick="SetDifferentName">
@@ -39,25 +39,23 @@
 @code
 {
     private string name = "";
-    private string[] savedNames = Array.Empty<string>();
+    private User[] savedUsers = Array.Empty<User>();
     private MatTextField<string> nameTextField;
     private bool differentName;
 
     private void Next()
     {
-        StateService.SubmitName(name);
-        NavigationManager.NavigateTo("puzzles-progress");
+        Next(StateService.SubmitUserName(name));
     }
     
-    private void Next(string n)
+    private void Next(User user)
     {
-        StateService.UserName = n;
-        NavigationManager.NavigateTo("puzzles-progress");
+        NavigationManager.NavigateToPuzzlesProgress(user.Id);
     }
 
     protected override void OnInitialized()
     {
-        savedNames = StateService.GetNames();
+        savedUsers = StateService.GetUsers();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

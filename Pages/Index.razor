@@ -1,34 +1,81 @@
 ﻿@page "/"
+@inject StateService StateService;
 
 <div class="flex flex--centered full-viewport">
     <form @onsubmit="Next" @onsubmit:preventDefault="true">
         <h1>Jak się nazywasz?</h1>
-        <div>
-            <div class="padding--horizontal">
-                <MatTextField @bind-Value="@name" Label="Twoje imię" FullWidth="true" Required="true" @ref="nameTextField"/>
+        @if (savedNames.Length == 0 || differentName)
+        {
+            <div>
+                <div class="padding--horizontal">
+                    <MatTextField @bind-Value="@name" Label="Twoje imię" FullWidth="true" Required="true" @ref="nameTextField"/>
+                </div>
+                <footer class="padding--horizontal flex flex--end">
+                    <MatButton type="submit">
+                        Dalej
+                    </MatButton>
+                </footer>
             </div>
-            <footer class="padding--horizontal flex flex--end">
-                <MatButton type="submit">
-                    Dalej
-                </MatButton>
-            </footer>
-        </div>
+        }
+        else
+        {
+            <MatList SingleSelection="true">
+                @foreach (var n in savedNames)
+                {
+                    <MatListItem OnClick="() => Next(n)">
+                        @n
+                    </MatListItem>
+                }
+                <MatListItem OnClick="SetDifferentName">
+                    Inaczej...
+                </MatListItem>
+            </MatList>
+        }
+
     </form>
 </div>
 
 @code
 {
     private string name;
+    private string[] savedNames = Array.Empty<string>();
     private MatTextField<string> nameTextField;
-    
+    private bool differentName;
+
     private void Next(EventArgs obj)
     {
-        Console.WriteLine(name);
+        StateService.SubmitName(name);
+    }
+    
+    private void Next(string n)
+    {
+        StateService.UserName = n;
+    }
+
+    protected override void OnInitialized()
+    {
+        savedNames = StateService.GetNames();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
+        {
+            await FocusNameInput();
+        }
+    }
+
+    private async Task SetDifferentName()
+    {
+        differentName = true;
+        StateHasChanged();
+        await Task.Delay(1);
+        await FocusNameInput();
+    }
+    
+    private async Task FocusNameInput()
+    {
+        if (nameTextField != null)
         {
             await nameTextField.InputRef.FocusAsync();
         }

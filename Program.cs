@@ -22,6 +22,8 @@ namespace ChessNET
             builder.Services.AddScoped<PuzzleRepository>();
             builder.Services.AddScoped<LegalMovesGenerator>();
             builder.Services.AddScoped<FenParser>();
+            builder.Services.AddScoped<LocalStorage>();
+            builder.Services.AddScoped<StateService>();
             builder.Services.AddMatBlazor();
             await builder.Build().RunAsync();
         }

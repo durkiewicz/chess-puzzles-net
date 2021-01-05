@@ -18,6 +18,11 @@
                 BackgroundColor="#fff"
                 OnClick="PromotionPieceClicked"/>
         }
+        
+        @foreach (var s in HighlightedSquares)
+        {
+            <SquareHighlight Square="@s"/>
+        }
     </div>
     <div class="chessboard">
         @foreach (var rank in Enumerable.Range(1, 8).Reverse())
@@ -42,6 +47,9 @@
     [Parameter]
     public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
 
+    [Parameter]
+    public IEnumerable<Square> HighlightedSquares { get; set; } = Enumerable.Empty<Square>();
+    
     [Parameter]
     public EventCallback<Square> SquareClicked { get; set; }
 

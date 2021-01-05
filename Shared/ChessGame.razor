@@ -8,6 +8,7 @@
     PieceDeselected="PieceDeselected"
     SquareClicked="SquareClicked"
     PiecePromoted="PiecePromoted"
+    HighlightedSquares="HighlightedSquares"
     />
 
 @code {
@@ -24,6 +25,8 @@
     [Parameter]
     public EventCallback<Move> PieceMoved { get; set; }
 
+    private IEnumerable<Square> HighlightedSquares => legalMoves.Select(m => m.To).Distinct();
+    
     private async Task PieceSelected(PiecePosition p)
     {
         selectedPiece = p;
@@ -41,9 +44,9 @@
     private async Task SquareClicked(Square square)
     {
         var move = legalMoves.FirstOrDefault(m => m.To == square);
+        legalMoves = new Move[0];
         if (move == null)
         {
-            legalMoves = new Move[0];
             promotionsSquare = null;
         }
         else if (move.IsPromotion)
@@ -61,11 +64,8 @@
         var (square, piece) = fileAndPiece;
         var move = legalMoves.FirstOrDefault(m => m.To == square && m.PromotionPiece == piece);
         promotionsSquare = null;
-        if (move == null)
-        {
-            legalMoves = new Move[0];
-        }
-        else
+        legalMoves = new Move[0];
+        if (move != null)
         {
             await PieceMoved.InvokeAsync(move);
         }

@@ -1,0 +1,16 @@
+<div class="square-highlight flex flex--centered"
+     style="
+        grid-column: @Column / span 1;
+        grid-row: @Row / span 1;
+    "
+     >
+    
+</div>
+
+@code {
+    [Parameter]
+    public Square Square { get; set; }
+
+    private int Column => (int)Square.File;
+    private int Row => 9 - Square.Rank;
+}

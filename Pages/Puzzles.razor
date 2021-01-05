@@ -67,14 +67,16 @@
     private async Task PieceMoved(Move move)
     {
         piecesPositions = piecesPositions
-            .Select(p => p.Square == move.From ? p with { Square = move.To } : p)
+            .Select(p =>
+                p.Square == move.From
+                    ? p with {
+                        Square = move.To,
+                        Piece = move.IsPromotion ? move.PromotionPiece ?? p.Piece : p.Piece
+                    }
+                    : p
+            )
             .ToList();
-        await Task.Delay(1000);
-        showCoverWithIconType = move.IsCheckMate ? CoverWithIcon.IconType.ThumbsUp : CoverWithIcon.IconType.ThumbsDown;
-        showCoverWithIcon = true;
-        StateHasChanged();
-        await Task.Delay(500);
-        showCoverWithIcon = false;
+        await ShowThumbsUpOrDown(move.IsCheckMate);
         if (move.IsCheckMate)
         {
             if (CurrentIndex < puzzles.Length - 1)
@@ -99,5 +101,15 @@
             numberOfFailures++;
             piecesPositions = FenParser.GetPiecesPositions(CurrentPuzzle);
         }
+    }
+
+    private async Task ShowThumbsUpOrDown(bool up)
+    {
+        await Task.Delay(1000);
+        showCoverWithIconType = up ? CoverWithIcon.IconType.ThumbsUp : CoverWithIcon.IconType.ThumbsDown;
+        showCoverWithIcon = true;
+        StateHasChanged();
+        await Task.Delay(500);
+        showCoverWithIcon = false;
     }
 }

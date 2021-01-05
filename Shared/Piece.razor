@@ -1,7 +1,9 @@
 @using ChessNET.Domain
+
 <div class="piece @SelectedClass @SelectableClass"
     style="
         background-image: url(@BackgroundImageUrl);
+        background-color: @(BackgroundColor ?? "transparent");
         transform: translate(@TranslateX%, @TranslateY%);
     "
     @onclick="HandleClick"
@@ -14,6 +16,9 @@
 
     [Parameter]
     public EventCallback<PiecePosition> OnClick { get; set; }
+    
+    [Parameter]
+    public string BackgroundColor { get; set; }
 
     [Parameter]
     public bool IsSelected { get; set; }

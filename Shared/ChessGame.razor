@@ -1,11 +1,19 @@
 @using ChessNET.Domain
 @inject LegalMovesGenerator LegalMoves;
 
-<Chessboard PiecesPositions="PiecesPositions" PieceSelected="PieceSelected" PieceDeselected="PieceDeselected" SquareClicked="SquareClicked"/>
+<Chessboard
+    PiecesPositions="PiecesPositions"
+    ShowPromotionsForSquare="@promotionsSquare"
+    PieceSelected="PieceSelected"
+    PieceDeselected="PieceDeselected"
+    SquareClicked="SquareClicked"
+    PiecePromoted="PiecePromoted"
+    />
 
 @code {
     private Move[] legalMoves = new Move[0];
     private PiecePosition selectedPiece;
+    private Square promotionsSquare;
     
     [Parameter]
     public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
@@ -33,6 +41,26 @@
     private async Task SquareClicked(Square square)
     {
         var move = legalMoves.FirstOrDefault(m => m.To == square);
+        if (move == null)
+        {
+            legalMoves = new Move[0];
+            promotionsSquare = null;
+        }
+        else if (move.IsPromotion)
+        {
+            promotionsSquare = move.To;
+        }
+        else
+        {
+            await PieceMoved.InvokeAsync(move);
+        }
+    }
+
+    private async Task PiecePromoted(Tuple<Square, Domain.Piece> fileAndPiece)
+    {
+        var (square, piece) = fileAndPiece;
+        var move = legalMoves.FirstOrDefault(m => m.To == square && m.PromotionPiece == piece);
+        promotionsSquare = null;
         if (move == null)
         {
             legalMoves = new Move[0];

@@ -8,6 +8,16 @@
                 IsSelectable=@(p.Color == ColorToMove)
                 OnClick="PieceClicked"/>
         }
+
+        @foreach (var p in PromotionPieces)
+        {
+            <Piece
+                Position=@p
+                IsSelected=@false
+                IsSelectable=@true
+                BackgroundColor="#fff"
+                OnClick="PromotionPieceClicked"/>
+        }
     </div>
     <div class="chessboard">
         @foreach (var rank in Enumerable.Range(1, 8).Reverse())
@@ -22,22 +32,48 @@
 
 @code {
     private PiecePosition selectedPiecePosition;
-    
+
     [Parameter]
     public Color ColorToMove { get; set; } = Color.White;
-    
+
+    [Parameter]
+    public Square ShowPromotionsForSquare { get; set; }
+
     [Parameter]
     public IEnumerable<PiecePosition> PiecesPositions { get; set; } = Enumerable.Empty<PiecePosition>();
 
     [Parameter]
     public EventCallback<Square> SquareClicked { get; set; }
-    
+
     [Parameter]
     public EventCallback<PiecePosition> PieceSelected { get; set; }
-    
+
+    [Parameter]
+    public EventCallback<Tuple<Square, Domain.Piece>> PiecePromoted { get; set; }
+
     [Parameter]
     public EventCallback<PiecePosition> PieceDeselected { get; set; }
-    
+
+    private IEnumerable<PiecePosition> PromotionPieces
+    {
+        get
+        {
+            var square = ShowPromotionsForSquare;
+            if (square == null)
+            {
+                return Enumerable.Empty<PiecePosition>();
+            }
+            var ranks = square.Rank == 1 ? new[] {1, 2, 3, 4} : new[] {8, 7, 6, 5};
+            return new[]
+            {
+                new PiecePosition(Domain.Piece.Queen, ColorToMove, new Square(square.File, ranks[0])),
+                new PiecePosition(Domain.Piece.Rook, ColorToMove, new Square(square.File, ranks[1])),
+                new PiecePosition(Domain.Piece.Bishop, ColorToMove, new Square(square.File, ranks[2])),
+                new PiecePosition(Domain.Piece.Knight, ColorToMove, new Square(square.File, ranks[3])),
+            };
+        }
+    }
+
     private async Task PieceClicked(PiecePosition piece)
     {
         if (piece.Color == ColorToMove)
@@ -49,6 +85,11 @@
         {
             await DeselectPieceIfNeeded();
         }
+    }
+
+    private async Task PromotionPieceClicked(PiecePosition piece)
+    {
+        await PiecePromoted.InvokeAsync(Tuple.Create(ShowPromotionsForSquare, piece.Piece));
     }
 
     private async Task HandleSquareClick(Square square)

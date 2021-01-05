@@ -41,6 +41,7 @@
             userName = StateService.GetUserName(UserId.Value);
             puzzleSets = PuzzleRepo.PuzzleSets;
             var pairs = StateService.GetSolvedPuzzleSets()
+                .Where(x => x.UserId == UserId)
                 .GroupBy(x => x.SetId)
                 .Select(group =>
                     KeyValuePair.Create(

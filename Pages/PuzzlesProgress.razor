@@ -2,6 +2,7 @@
 @inject StateService StateService;
 @inject ChessNavigationManager NavigationManager;
 @inject PuzzleRepository PuzzleRepo;
+@inject ChessTheme Theme
 
 <div class="flex flex--centered">
     <div>
@@ -12,13 +13,14 @@
         <MatList SingleSelection="true" TwoLine="true">
             @foreach (var puzzleSet in puzzleSets)
             {
-                <MatListItem OnClick="() => Choose(puzzleSet)">
+                <MatListItem OnClick="() => Choose(puzzleSet)" Class="flex flex--space-between progress__list-item">
                     <MatListItemText>
                         <MatListItemPrimaryText>@puzzleSet.Title</MatListItemPrimaryText>
-                        <MatListItemSecondaryText>Nierozwiązane.</MatListItemSecondaryText>
+                        <MatListItemSecondaryText>@SolutionText(puzzleSet)</MatListItemSecondaryText>
                     </MatListItemText>
+                    <MatIcon Icon="@Icon(puzzleSet)" Style="@(IconStyle(puzzleSet))" />
                 </MatListItem>
-                <MatListDivider></MatListDivider>
+                <MatListDivider/>
             }
         </MatList>
     </div>
@@ -26,7 +28,8 @@
 
 @code {
     private string userName;
-    private IEnumerable<PuzzleSet> puzzleSets;
+    private IEnumerable<PuzzleSet> puzzleSets = Enumerable.Empty<PuzzleSet>();
+    private Dictionary<int, SolvedPuzzleSet> solvedPuzzleSets = new ();
     
     [Parameter]
     public int? UserId { get; set; } = 1;
@@ -36,16 +39,50 @@
         if (UserId.HasValue)
         {
             userName = StateService.GetUserName(UserId.Value);
+            puzzleSets = PuzzleRepo.PuzzleSets;
+            var pairs = StateService.GetSolvedPuzzleSets()
+                .GroupBy(x => x.SetId)
+                .Select(group =>
+                    KeyValuePair.Create(
+                        group.Key,
+                        group.OrderBy(x => x.NumberOfFailures)
+                            .ThenBy(x => x.Time)
+                            .First()
+                        ));
+            solvedPuzzleSets = new Dictionary<int, SolvedPuzzleSet>(pairs);
         }
         else
         {
             NavigationManager.NavigateToIndex();
         }
-        puzzleSets = PuzzleRepo.PuzzleSets;
     }
 
     private void Choose(PuzzleSet puzzleSet)
     {
         NavigationManager.NavigateToPuzzles(UserId.Value, puzzleSet.Id);
+    }
+
+    private string SolutionText(PuzzleSet puzzleSet)
+    {
+        var solved = solvedPuzzleSets.GetValueOrDefault(puzzleSet.Id);
+        return solved == null ? "Nierozwiązane." : solved.GetDescription();
+    }
+
+    private string IconStyle(PuzzleSet puzzleSet)
+    {
+        var solved = solvedPuzzleSets.GetValueOrDefault(puzzleSet.Id);
+        var color = solved == null ? "#CCC" : Theme.Theme.Primary;
+        return $"color: {color}";
+    }
+
+    private string Icon(PuzzleSet puzzleSet)
+    {
+        var solved = solvedPuzzleSets.GetValueOrDefault(puzzleSet.Id);
+        return solved switch
+        {
+            null => MatIconNames.Star_border,
+            { NumberOfFailures: 0 } => MatIconNames.Star,
+            {} => MatIconNames.Star_half,
+        };
     }
 }

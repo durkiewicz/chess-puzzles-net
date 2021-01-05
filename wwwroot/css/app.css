@@ -53,6 +53,10 @@ h1, h2, h3, h4, h5, h6 {
         justify-content: flex-end;
     }
 
+    .flex--space-between {
+        justify-content: space-between;
+    }
+
 .padding, .padding--top, .padding--horizontal { padding-top: 1rem; }
 .padding, .padding--bottom, .padding--horizontal { padding-bottom: 1rem; }
 .padding, .padding--left, .padding--vertical { padding-left: 1rem; }

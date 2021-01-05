@@ -25,6 +25,7 @@ namespace ChessNET
             builder.Services.AddScoped<LocalStorage>();
             builder.Services.AddScoped<StateService>();
             builder.Services.AddScoped<ChessNavigationManager>();
+            builder.Services.AddScoped<ChessTheme>();
             builder.Services.AddMatBlazor();
             await builder.Build().RunAsync();
         }

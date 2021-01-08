@@ -30,7 +30,7 @@
     
     private string SelectableClass => IsSelectable ? "" : "piece--unselectable";
     
-    private string PromotionClass => IsPromotionPiece ? "" : "piece--promotion";
+    private string PromotionClass => IsPromotionPiece ? "piece--promotion" : "";
 
     private string BackgroundColor => IsPromotionPiece ? "#fff" : "transparent";
     

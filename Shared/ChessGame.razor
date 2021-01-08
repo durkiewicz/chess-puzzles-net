@@ -55,8 +55,8 @@
         }
         else
         {
-            await PieceMoved.InvokeAsync(move);
             legalMoves = new Move[0];
+            await PieceMoved.InvokeAsync(move);
         }
     }
 

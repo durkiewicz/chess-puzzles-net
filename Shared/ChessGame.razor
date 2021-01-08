@@ -44,9 +44,9 @@
     private async Task SquareClicked(Square square)
     {
         var move = legalMoves.FirstOrDefault(m => m.To == square);
-        legalMoves = new Move[0];
         if (move == null)
         {
+            legalMoves = new Move[0];
             promotionsSquare = null;
         }
         else if (move.IsPromotion)
@@ -56,6 +56,7 @@
         else
         {
             await PieceMoved.InvokeAsync(move);
+            legalMoves = new Move[0];
         }
     }
 

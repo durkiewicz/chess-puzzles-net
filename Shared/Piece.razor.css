@@ -26,6 +26,10 @@
         z-index: 100;
     }
 
+    .piece--promotion {
+        z-index: 300;
+    }
+
     @media (max-width: 768px) {
         .piece--selected::after {
             border: 1px solid white;

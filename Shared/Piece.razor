@@ -1,6 +1,6 @@
 @using ChessNET.Domain
 
-<div class="piece @SelectedClass @SelectableClass"
+<div class="piece @SelectedClass @SelectableClass @PromotionClass"
     style="
         background-image: url(@BackgroundImageUrl);
         background-color: @(BackgroundColor ?? "transparent");
@@ -16,9 +16,6 @@
 
     [Parameter]
     public EventCallback<PiecePosition> OnClick { get; set; }
-    
-    [Parameter]
-    public string BackgroundColor { get; set; }
 
     [Parameter]
     public bool IsSelected { get; set; }
@@ -26,10 +23,17 @@
     [Parameter]
     public bool IsSelectable { get; set; } = true;
     
+    [Parameter]
+    public bool IsPromotionPiece { get; set; }
+    
     private string SelectedClass => IsSelected ? "piece--selected" : "";
     
     private string SelectableClass => IsSelectable ? "" : "piece--unselectable";
+    
+    private string PromotionClass => IsPromotionPiece ? "" : "piece--promotion";
 
+    private string BackgroundColor => IsPromotionPiece ? "#fff" : "transparent";
+    
     private string BackgroundImageUrl
     {
         get

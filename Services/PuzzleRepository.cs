@@ -242,7 +242,7 @@ namespace ChessNET
                 "7k/3q4/p3B1RK/2p4p/5p2/5p2/8/8 w - - 0 1",
                 "4R3/3K1kp1/5pr1/2B1p3/3n4/8/8/8 w - - 0 1",
             }),
-            new(14, "Wieża i skoczek.", new[]
+            new(15, "Wieża i skoczek.", new[]
             {
                 "6k1/5R2/4N1K1/8/8/8/8/8 w - - 0 1",
                 "5k2/1R6/2N3K1/8/8/8/8/8 w - - 0 1",

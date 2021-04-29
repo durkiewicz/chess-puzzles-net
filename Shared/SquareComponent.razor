@@ -21,7 +21,7 @@
         {
             var rankIsEven = Square.Rank % 2 == 0;
             var fileIsEven = (int) Square.File % 2 == 0;
-            var isLight = rankIsEven == fileIsEven;
+            var isLight = rankIsEven != fileIsEven;
             return isLight ? "square--light" : "square--dark";
         }
     }

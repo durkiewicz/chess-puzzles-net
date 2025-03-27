@@ -8,7 +8,7 @@ namespace ChessNET
     {
         private static readonly PuzzleSet[] sets =
         {
-            new(1, "Samotna wieża.", new[]
+            new(1, "Tower", new[]
             {
                 "1k6/6R1/1K6/8/8/8/8/8 w - - 0 1",
                 "8/k1K5/8/8/8/1R6/8/8 w - - 0 1",
@@ -19,7 +19,7 @@ namespace ChessNET
                 "7k/5R2/6K1/8/8/8/8/8 w - - 0 1",
                 "8/8/8/8/8/6Rp/5K2/7k w - - 0 1",
             }),
-            new(2, "Dwie wieże.", new[]
+            new(2, "Two towers", new[]
             {
                 "8/8/8/3K4/7k/8/6R1/5R2 w - - 0 1",
                 "8/8/8/8/4KR2/8/6R1/3k4 w - - 0 1",
@@ -30,7 +30,7 @@ namespace ChessNET
                 "1R6/8/8/R7/8/2k1K3/8/8 w - - 0 1",
                 "8/8/3K4/4R3/3k4/2p1R3/8/8 w - - 0 1",
             }),
-            new(3, "Samotny hetman.", new[]
+            new(3, "Queen.", new[]
             {
                 "8/8/8/8/8/5K2/4Q3/6k1 w - - 0 1",
                 "8/8/1Q6/8/8/2K5/k7/8 w - - 0 1",
@@ -49,7 +49,7 @@ namespace ChessNET
                 "8/8/8/8/8/4KQ2/8/6kq w - - 0 1",
                 "8/8/8/8/8/4K1pp/7Q/5k2 w - - 0 1",
             }),
-            new(4, "Goniec.", new[]
+            new(4, "Bishop", new[]
             {
                 "8/8/8/8/8/7B/5K1p/q6k w - - 0 1",
                 "5k2/5P2/4K3/6B1/p7/8/1p6/8 w - - 0 1",
@@ -69,7 +69,7 @@ namespace ChessNET
                 "6k1/6B1/6KP/8/8/8/8/8 w - - 0 1",
                 "k7/p7/1pK5/1P6/8/5B2/8/8 w - - 0 1",
             }),
-            new(5, "Skoczek", new[]
+            new(5, "Knight", new[]
             {
                 "8/8/8/6p1/6N1/8/7p/5K1k w - - 0 1",
                 "8/8/8/8/8/8/p1K5/k1N5 w - - 0 1",
@@ -87,7 +87,7 @@ namespace ChessNET
                 "6k1/6P1/5bK1/3N4/8/8/8/8 w - - 0 1",
                 "k7/2P5/8/1N5p/8/5K2/8/8 w - - 0 1",
             }),
-            new(6, "Wieża z pionami.", new[]
+            new(6, "Tower + pawns", new[]
             {
                 "5Rbk/7P/7K/8/8/8/8/8 w - - 0 1",
                 "6k1/4R3/5KP1/8/8/8/8/8 w - - 0 1",
@@ -98,7 +98,7 @@ namespace ChessNET
                 "1k6/1P6/K1R5/8/8/8/3p4/8 w - - 0 1",
                 "8/8/5P1k/5K2/3R4/8/8/8 w - - 0 1",
             }),
-            new(7, "Hetman z pionami.", new[]
+            new(7, "Queen + pawns", new[]
             {
                 "8/8/8/1p1Q4/k3K3/2P5/8/8 w - - 0 1",
                 "5Q2/8/5K2/7k/7p/7P/8/8 w - - 0 1",
@@ -125,7 +125,7 @@ namespace ChessNET
                 "8/1Q6/8/2p3pp/2k4P/4K3/P5P1/8 w - - 0 1",
                 "6Q1/k3K3/4Q3/1P2P3/8/8/8/8 w - - 0 1",
             }),
-            new(8, "Pionki.", new[]
+            new(8, "Pawns", new[]
             {
                 "4k3/4P3/4KP2/7p/8/8/8/8 w - - 0 1",
                 "8/5KPk/5p2/6P1/8/8/8/8 w - - 0 1",
@@ -135,7 +135,7 @@ namespace ChessNET
                 "7k/5Kp1/5PP1/8/8/8/8/8 w - - 0 1",
                 "k7/2P5/1P1K4/7p/3P3P/8/8/8 w - - 0 1",
             }),
-            new(9, "Para gońców.", new[]
+            new(9, "Two bishops", new[]
             {
                 "1k6/5K2/5B2/2BB1B2/8/8/8/8 w - - 0 1",
                 "8/8/8/5B2/5B2/8/5K2/7k w - - 0 1",
@@ -147,7 +147,7 @@ namespace ChessNET
                 "8/1B6/8/8/6p1/6Bk/5K2/8 w - - 0 1",
                 "8/8/5KBk/8/6p1/6B1/7p/8 w - - 0 1",
             }),
-            new(10, "Dwa skoczki.", new[]
+            new(10, "Two knights", new[]
             {
                 "7k/8/5NKN/8/8/8/8/4q3 w - - 0 1",
                 "8/8/8/8/1N6/1KN5/6p1/k7 w - - 0 1",
@@ -158,7 +158,7 @@ namespace ChessNET
                 "8/8/8/8/8/KN6/2p1N3/1k6 w - - 0 1",
                 "8/8/8/8/1N6/1KN5/p7/k7 w - - 0 1",
             }),
-            new(11, "Goniec i skoczek.", new[]
+            new(11, "Bishop + knight", new[]
             {
                 "7k/8/6KN/2B5/8/8/8/8 w - - 0 1",
                 "8/5KBk/8/8/6N1/8/8/8 w - - 0 1",
@@ -169,7 +169,7 @@ namespace ChessNET
                 "7k/4NB2/1p5K/6p1/2p5/8/8/6q1 w - - 0 1",
                 "8/8/8/8/8/8/p1KN4/kB6 w - - 0 1",
             }),
-            new(12, "Hetman i wieża.", new[]
+            new(12, "Queen + tower", new[]
             {
                 "8/8/3K3k/6R1/5Q2/8/8/8 w - - 0 1",
                 "2Qr2k1/4KR2/8/8/8/8/8/8 w - - 0 1",
@@ -188,7 +188,7 @@ namespace ChessNET
                 "K7/8/8/8/4Q2p/7k/2R3p1/8 w - - 0 1",
                 "3R1Q2/8/2K1k3/8/7p/8/6p1/8 w - - 0 1",
             }),
-            new(13, "Dwa hetmany.", new[]
+            new(13, "Two queens", new[]
             {
                 "6Q1/8/3Q4/8/kp6/8/2K5/8 w - - 0 1",
                 "5Q2/6Q1/1K6/7k/8/8/8/8 w - - 0 1",
@@ -207,7 +207,7 @@ namespace ChessNET
                 "5Q2/4Kp1k/4p1p1/3p4/7q/8/7Q/8 w - - 0 1",
                 "3Q1K1k/4qQ2/8/8/8/8/8/8 w - - 0 1",
             }),
-            new(14, "Wieża i goniec.", new[]
+            new(14, "Tower + bishop", new[]
             {
                 "8/k1B5/2K5/8/8/8/7R/8 w - - 0 1",
                 "8/8/8/8/8/3K4/3B4/3krR2 w - - 0 1",
@@ -242,7 +242,7 @@ namespace ChessNET
                 "7k/3q4/p3B1RK/2p4p/5p2/5p2/8/8 w - - 0 1",
                 "4R3/3K1kp1/5pr1/2B1p3/3n4/8/8/8 w - - 0 1",
             }),
-            new(15, "Wieża i skoczek.", new[]
+            new(15, "Tower + knight", new[]
             {
                 "6k1/5R2/4N1K1/8/8/8/8/8 w - - 0 1",
                 "5k2/1R6/2N3K1/8/8/8/8/8 w - - 0 1",

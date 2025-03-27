@@ -4,16 +4,16 @@
 
 <div class="flex flex--centered full-viewport">
     <form @onsubmit="Next" @onsubmit:preventDefault="true">
-        <h1>Jak się nazywasz?</h1>
+        <h1>What is your name?</h1>
         @if (savedUsers.Length == 0 || differentName)
         {
             <div>
                 <div class="padding--horizontal">
-                    <MatTextField @bind-Value="@name" Label="Twoje imię" FullWidth="true" Required="true" @ref="nameTextField"/>
+                    <MatTextField @bind-Value="@name" Label="Your name" FullWidth="true" Required="true" @ref="nameTextField"/>
                 </div>
                 <footer class="padding--horizontal flex flex--end">
                     <MatButton type="submit">
-                        Dalej
+                        Next
                     </MatButton>
                 </footer>
             </div>
@@ -28,7 +28,7 @@
                     </MatListItem>
                 }
                 <MatListItem OnClick="SetDifferentName">
-                    Inaczej...
+                    Different...
                 </MatListItem>
             </MatList>
         }

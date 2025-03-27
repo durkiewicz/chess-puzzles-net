@@ -7,14 +7,14 @@ namespace ChessNET.Domain
         private string FailuresString => NumberOfFailures switch
         {
             0 => "",
-            1 => "z 1 błędem ",
-            _ => $"z {NumberOfFailures} błędami "
+            1 => "with 1 mistake ",
+            _ => $"with {NumberOfFailures} mistakes "
         };
 
         public string GetDescription()
         {
             var time = TimeSpan.FromSeconds(Time).ToShortString();
-            return $"Rozwiązane {FailuresString}w {time}.";
+            return $"Solved {FailuresString}in {time}.";
         }
     };
 }

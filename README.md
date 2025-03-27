@@ -1,6 +1,6 @@
 # ChessNET
 
-A Blazor app with chess puzzles.
+A Blazor app with chess puzzles. Live demo: [https://chess-puzzles.up.railway.app](https://chess-puzzles.up.railway.app)
 
 ## Development
 
